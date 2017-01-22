@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <EditText
+        android:id="@+id/add_title"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter your task title"/>
+
+    <TextView
+        android:id="@+id/add_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="17dp"
+        android:textSize="20sp"
+        android:text="2017/01/01, 07:00"/>
+
+    <TextView
+        android:id="@+id/add_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:textSize="20sp"
+        android:text="Seoul, Korea"/>
+    <EditText
+        android:id="@+id/add_memo"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:padding="10dp"
+        android:gravity="top"
+        android:background="@android:drawable/edit_text"
+        android:backgroundTintMode="@android:color/white"
+        android:hint="Enter your task here"/>
+
+</LinearLayout>
