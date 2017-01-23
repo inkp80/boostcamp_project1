@@ -23,10 +23,11 @@ public class TodolistDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase){
         final String SQL_CREATE_TODOLIST = "CREATE TABLE " + TodolistContract.TodolistEntry.TABLE_NAME + " (" +
                 TodolistContract.TodolistEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                TodolistContract.TodolistEntry.COLUMN_DATE + " TEXT NOT NULL, " +
-                TodolistContract.TodolistEntry.COLUMN_TODO + " TEXT NOT NULL, " +
-                TodolistContract.TodolistEntry.COLUMN_MEMO + " TEXT, " +
-                TodolistContract.TodolistEntry.COLUMN_LOCATION + " TEXT" +
+                TodolistContract.TodolistEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
+                TodolistContract.TodolistEntry.COLUMN_DATE + " TEXT, " +
+                TodolistContract.TodolistEntry.COLUMN_TIME + "  TEXT, " +
+                TodolistContract.TodolistEntry.COLUMN_LOCATION + " TEXT, " +
+                TodolistContract.TodolistEntry.COLUMN_MEMO + " TEXT" +
                 "); ";
         sqLiteDatabase.execSQL(SQL_CREATE_TODOLIST);
     }

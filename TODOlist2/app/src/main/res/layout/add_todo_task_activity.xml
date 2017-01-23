@@ -8,7 +8,7 @@
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Enter your task title"/>
+        android:hint="Enter your task title"/>
 
     <TextView
         android:id="@+id/add_time"
@@ -35,5 +35,12 @@
         android:background="@android:drawable/edit_text"
         android:backgroundTintMode="@android:color/white"
         android:hint="Enter your task here"/>
+    <Button
+        android:id="@+id/bt_ParsingData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:onClick="onClickAddTask"
+        />
 
 </LinearLayout>

@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,11 +20,12 @@ import android.view.View;
 import com.example.macbook.todolist2.data.TodolistContract;
 import com.example.macbook.todolist2.data.TodolistDbHelper;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        LoaderManager.LoaderCallbacks<Cursor>{
 
+    private static final int TASK_LOADER_ID = 0;
     private TodoListAdapter mAdapter;
-    private SQLiteDatabase mDB;
-
+    RecyclerView mTodoList_Viewer;
     //log tag = MAIN ACTIVITY
     private final static String LOG_TAG = MainActivity.class.getSimpleName();
 
@@ -31,18 +36,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //recyclerView base settings
-        RecyclerView mTodoList_Viewer;
         mTodoList_Viewer = (RecyclerView) this.findViewById(R.id.list_viewer);
         mTodoList_Viewer.setLayoutManager(new LinearLayoutManager(this));
 
-        //DB base settings
-        TodolistDbHelper dbHelper = new TodolistDbHelper(this);
-        mDB = dbHelper.getWritableDatabase();
-
-
-        //DB로부터 데이터를 읽어와 뷰에 뿌린다.
-        //Cursor cursor = getAll_TodoList;
-        //mAdapter = new TodoListAdapter(this, cursor);
+        mAdapter = new TodoListAdapter(this);
         mTodoList_Viewer.setAdapter(mAdapter);
 
         /*
@@ -72,21 +69,24 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(addListIntent);
             }
         });
+
+        getSupportLoaderManager().initLoader(TASK_LOADER_ID, null, this);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        getSupportLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
     }
 
 
+/*
     //query 처리 파트
 
-/*    private Cursor getAllList(){
-        return mDB.query(
-                TodolistContract.TodolistEntry.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                TodolistContract.TodolistEntry.COLUMN_TIMESTAMP);
-        *//*
-        query(
+    private Cursor getAllList(){
+        */
+/*
+        DbHelper.query(
             tableName,
             tableColumns,
             whereClause,
@@ -95,7 +95,9 @@ public class MainActivity extends AppCompatActivity {
             having,
             orderBy);
         *//*
-    }*/
+
+    }
+*/
 
 
     @Override
@@ -113,4 +115,52 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        return new AsyncTaskLoader<Cursor>(this) {
+
+            Cursor mTaskData = null;
+
+            @Override
+            public void onStartLoading() {
+                if(mTaskData != null){
+                    deliverResult(mTaskData);
+                } else {
+                    forceLoad();
+                }
+            }
+
+            @Override
+            public Cursor loadInBackground(){
+                Log.d(LOG_TAG, "getContent, Querying");
+                try {
+                    return getContentResolver().query(TodolistContract.TodolistEntry.CONTENT_URI,
+                            null,
+                            null,
+                            null,
+                            TodolistContract.TodolistEntry.COLUMN_TITLE
+                            );
+                } catch (Exception e){
+                    Log.e(LOG_TAG, "Async Task : loading data is failed");
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+            public void deliverResult(Cursor data) {
+                mTaskData = data;
+                super.deliverResult(data);
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mAdapter.swapCursor(null);
+    }
 }
