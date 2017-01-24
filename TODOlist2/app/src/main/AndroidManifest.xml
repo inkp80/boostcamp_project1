@@ -20,6 +20,9 @@
             android:name="com.example.macbook.todolist2.AddTodoTaskActivity"
             android:label="Add a New TODO list"/>
 
+        <activity android:name="com.example.macbook.todolist2.DetailActivity"
+            android:label="DetailView of TODO"/>
+
         <provider
             android:name="com.example.macbook.todolist2.data.TaskContentProvider"
             android:authorities="com.example.macbook.todolist2"

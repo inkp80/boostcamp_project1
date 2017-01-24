@@ -3,31 +3,58 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <EditText
+        android:textSize="30sp"
         android:id="@+id/add_title"
         android:padding="10dp"
-        android:layout_margin="10dp"
+        android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter your task title"/>
 
-    <TextView
-        android:id="@+id/add_time"
+    <LinearLayout
+        android:padding="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="17dp"
-        android:textSize="20sp"
-        android:text="2017/01/01, 07:00"/>
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:padding="5dp"
+            android:id="@+id/add_date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="25sp"
+            android:text="2017/01/01"
+            android:onClick="mOnClick"
+            android:background="@drawable/back"/>
+        <TextView
+            android:padding="5dp"
+            android:id="@+id/add_time"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="25sp"
+            android:text="00:00"
+            android:background="@drawable/back"/>
+    </LinearLayout>
 
     <TextView
+        android:padding="5dp"
+        android:layout_margin="8dp"
         android:id="@+id/add_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:textSize="20sp"
+        android:textSize="25sp"
         android:text="Seoul, Korea"/>
+
     <EditText
         android:id="@+id/add_memo"
-        android:layout_margin="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:padding="10dp"
@@ -35,12 +62,29 @@
         android:background="@android:drawable/edit_text"
         android:backgroundTintMode="@android:color/white"
         android:hint="Enter your task here"/>
-    <Button
-        android:id="@+id/bt_ParsingData"
+    <LinearLayout
+        android:layout_gravity="right"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        android:onClick="onClickAddTask"
-        />
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/bt_add_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:hint="Remind me!"/>
+
+        <Button
+            android:id="@+id/bt_ParsingData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:onClick="onClickAddTask"
+            />
+
+    </LinearLayout>
+
 
 </LinearLayout>

@@ -3,6 +3,7 @@ package com.example.macbook.todolist2;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -42,24 +43,28 @@ public class MainActivity extends AppCompatActivity implements
         mAdapter = new TodoListAdapter(this);
         mTodoList_Viewer.setAdapter(mAdapter);
 
-        /*
 
-        *For Dynamic Delete items of Todo list*
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT){
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target){
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
             }
-
             @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                long id = (long) viewHolder.itemView.getTag();
-                removeGuest(id);
-                mAdapter.swapCursor(getAllGuests());
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+
+                int id = (int) viewHolder.itemView.getTag();
+
+                String strID = Integer.toString(id);
+                Uri uri = TodolistContract.TodolistEntry.CONTENT_URI;
+                uri = uri.buildUpon().appendPath(strID).build();
+
+                getContentResolver().delete(uri, null, null);
+                getSupportLoaderManager().restartLoader(TASK_LOADER_ID, null, MainActivity.this);
+
             }
-        }).attachToRecyclerView(waitlistRecyclerView);
-        */
+        }).attachToRecyclerView(mTodoList_Viewer);
+
 
         FloatingActionButton FAB = (FloatingActionButton) findViewById(R.id.fab);
         FAB.setOnClickListener(new View.OnClickListener(){

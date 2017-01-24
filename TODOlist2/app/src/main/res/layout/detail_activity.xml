@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- id = title Viewer -->
+    <TextView
+        android:id="@+id/tv_id_viewer"
+        android:paddingLeft="17dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:textSize="25sp"
+        android:background="@drawable/back"
+        android:text="Todo :"
+        />
+
+    <LinearLayout
+        android:paddingLeft="17dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@drawable/back">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="23sp"
+            android:text="Time :     "/>
+            <TextView
+                android:id="@+id/tv_date_viewer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="23sp"
+                android:text="2017/01/01"
+                android:background="@drawable/back"
+                android:padding="5dp"
+                />
+            <TextView
+                android:id="@+id/tv_time_viewer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="23sp"
+                android:text="00:00"
+                android:background="@drawable/back"
+                android:padding="5dp"
+                android:layout_marginLeft="10dp"
+                />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_location_viewer"
+        android:paddingLeft="17dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:textSize="23sp"
+        android:background="@drawable/back"
+        android:text="Location : "
+        />
+
+    <TextView
+        android:id="@+id/tv_memo_viewer"
+        android:paddingLeft="17dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:textSize="18sp"
+        android:background="@drawable/back"
+        android:text="Memo : "
+        />
+
+    <EditText
+        android:paddingLeft="17dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:id="@+id/ed_comment_viewer"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@android:drawable/edit_text"
+        android:hint="Enter you comments!"/>
+
+    <android.support.v7.widget.SwitchCompat
+        android:padding="10dp"
+        android:layout_gravity="bottom|right"
+        android:id="@+id/detail_set_alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:hint="Remind me! or.. not"/>
+</LinearLayout>
