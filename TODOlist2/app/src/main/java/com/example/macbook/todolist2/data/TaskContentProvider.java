@@ -139,9 +139,34 @@ public class TaskContentProvider extends ContentProvider{
         return deleted;
     }
 
+
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
+    public int update(@NonNull Uri uri, ContentValues values, String selection,
+                      String[] selectionArgs) {
+
+        //Keep track of if an update occurs
+        int tasksUpdated;
+
+        // match code
+        int match = sUriMatcher.match(uri);
+
+        switch (match) {
+            case TODOLIST_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+
+                tasksUpdated = mTodoListDbHelper.getWritableDatabase()
+                        .update(TABLE_NAME, values, "_id=?", new String[]{id});
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        if (tasksUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        // return number of tasks updated
+        return tasksUpdated;
     }
 
     @Nullable

@@ -13,7 +13,6 @@
 
     <LinearLayout
         android:padding="5dp"
-        android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
         android:orientation="horizontal"
@@ -27,9 +26,14 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="25sp"
-            android:text="2017/01/01"
             android:onClick="mOnClick"
-            android:background="@drawable/back"/>
+            android:text="0000/00/00"
+            android:background="#FFFFFFFF"/>
+        <View
+            android:layout_width="1dip"
+            android:layout_height="50dp"
+            android:background="#000000"
+            />
         <TextView
             android:padding="5dp"
             android:id="@+id/add_time"
@@ -38,12 +42,138 @@
             android:layout_weight="1"
             android:textSize="25sp"
             android:text="00:00"
-            android:background="@drawable/back"/>
+            android:background="#FFFFFFFF"/>
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/checkbox_parent"
+        android:layout_marginLeft="13dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:paddingLeft="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="7sp"
+            android:text="MON"/>
+        <CheckBox
+            android:id="@+id/bit_0"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckedBox_Setup"
+            />
+        <View
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:background="#000000"/>
+        <TextView
+            android:layout_marginLeft="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="7sp"
+            android:text="TUE"/>
+        <CheckBox
+            android:id="@+id/bit_1"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckedBox_Setup"
+            />
+        <View
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:background="#000000"/>
+        <TextView
+            android:layout_marginLeft="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="7sp"
+            android:text="WED"/>
+        <CheckBox
+            android:id="@+id/bit_2"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckedBox_Setup"
+            />
+        <View
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:background="#000000"/>
+        <TextView
+            android:layout_marginLeft="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="7sp"
+            android:text="THU"/>
+        <CheckBox
+            android:id="@+id/bit_3"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckedBox_Setup"
+            />
+        <View
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:background="#000000"/>
+        <TextView
+            android:layout_marginLeft="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="7sp"
+            android:text="FRI"/>
+        <CheckBox
+            android:id="@+id/bit_4"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckedBox_Setup"
+            />
+        <View
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:background="#000000"/>
+        <TextView
+            android:layout_marginLeft="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="7sp"
+            android:text="SAT"/>
+        <CheckBox
+            android:id="@+id/bit_5"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckedBox_Setup"
+            />
+        <View
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:background="#000000"/>
+        <TextView
+            android:layout_marginLeft="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="7sp"
+            android:text="SUN"/>
+        <CheckBox
+            android:id="@+id/bit_6"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckedBox_Setup"
+            />
+
+    </LinearLayout>
+
 
     <TextView
         android:padding="5dp"
-        android:layout_margin="8dp"
+        android:layout_marginLeft="8dp"
         android:id="@+id/add_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,6 +192,7 @@
         android:background="@android:drawable/edit_text"
         android:backgroundTintMode="@android:color/white"
         android:hint="Enter your task here"/>
+
     <LinearLayout
         android:layout_gravity="right"
         android:layout_width="wrap_content"

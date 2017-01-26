@@ -21,6 +21,8 @@ import android.view.View;
 import com.example.macbook.todolist2.data.TodolistContract;
 import com.example.macbook.todolist2.data.TodolistDbHelper;
 
+//if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -144,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements
                             null,
                             null,
                             null,
-                            TodolistContract.TodolistEntry.COLUMN_TITLE
+                            TodolistContract.TodolistEntry.COLUMN_TIME
                             );
                 } catch (Exception e){
                     Log.e(LOG_TAG, "Async Task : loading data is failed");

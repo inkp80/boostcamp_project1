@@ -24,8 +24,13 @@ import java.util.ArrayList;
 
 public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoListViewHolder>{
 
+    String TAG = TodoListAdapter.class.getSimpleName();
     private Context mContext;
     private Cursor mCursor;
+
+    public final static String INTENT_TIME = "intent_time";
+    public final static String INTENT_DAY_OF_WEEK = "intent_day_of_week";
+    public final static String INTENT_ALRAM = "intent_alarm";
 
     public final static String INTENT_TITLE = "intent_title";
     public final static String INTENT_MEMO = "intent_memo";
@@ -67,6 +72,9 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         int idx_month = mCursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_MONTH);
         int idx_date = mCursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_DATE);
 
+        int idx_dayOfweek = mCursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_DAY_OF_WEEK);
+        int idx_alarm = mCursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_ALARM);
+
 
         mCursor.moveToPosition(position);
         final int id = mCursor.getInt(idx_id);
@@ -75,7 +83,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
 
         String hour = mCursor.getString(idx_hour);
         String minute =  mCursor.getString(idx_minute);
-        String time = hour + " : " + minute;
 
         Log.d("DEBUG_ADAPTER", "BINDING CURSOR");
 
@@ -83,8 +90,18 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         String MONTH = mCursor.getString(idx_month);
         String DATE = mCursor.getString(idx_date);
 
+        String TIME = YEAR + MONTH + DATE + hour + minute;
+        int day_Of_week = mCursor.getInt(idx_dayOfweek);
+        int active_alarm = mCursor.getInt(idx_alarm);
+
+        Log.d(TAG, "Get from cursor : dayofWEEK");
 
         //전달될 인자 저장
+
+        holder.time_to_delivery = TIME;
+        holder.dayofweek_to_delivery = day_Of_week;
+        holder.activeAlarm_to_delivery = active_alarm;
+
         holder.id_to_delivery = id;
         holder.title_to_delivery = title;
         holder.memo_to_delivery = memo;
@@ -158,6 +175,9 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         TextView mText_memo;
 
 
+        String time_to_delivery;
+        int dayofweek_to_delivery;
+        int activeAlarm_to_delivery;
         String year_to_delivery;
         String month_to_delivery;
         String date_to_delivery;
@@ -180,6 +200,10 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(mContext, DetailActivity.class);
+            intent.putExtra(INTENT_TIME, time_to_delivery);
+            intent.putExtra(INTENT_DAY_OF_WEEK, dayofweek_to_delivery);
+            intent.putExtra(INTENT_ALRAM, activeAlarm_to_delivery);
+
             intent.putExtra(INTENT_TITLE, title_to_delivery);
             intent.putExtra(INTENT_MEMO, memo_to_delivery);
             intent.putExtra(INTENT_ID, id_to_delivery);

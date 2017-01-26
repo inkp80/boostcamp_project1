@@ -34,7 +34,6 @@
                 android:layout_height="wrap_content"
                 android:textSize="23sp"
                 android:text="2017/01/01"
-                android:background="@drawable/back"
                 android:padding="5dp"
                 />
             <TextView
@@ -43,11 +42,135 @@
                 android:layout_height="wrap_content"
                 android:textSize="23sp"
                 android:text="00:00"
-                android:background="@drawable/back"
                 android:padding="5dp"
                 android:layout_marginLeft="10dp"
                 />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginLeft="13dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:paddingLeft="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="7sp"
+            android:text="MON"/>
+        <CheckBox
+            android:id="@+id/bit_0_detail"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckedBox_Setup_detail"
+            />
+        <View
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:background="#000000"/>
+        <TextView
+            android:layout_marginLeft="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="7sp"
+            android:text="TUE"/>
+        <CheckBox
+            android:id="@+id/bit_1_detail"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckedBox_Setup_detail"
+            />
+        <View
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:background="#000000"/>
+        <TextView
+            android:layout_marginLeft="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="7sp"
+            android:text="WED"/>
+        <CheckBox
+            android:id="@+id/bit_2_detail"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckedBox_Setup_detail"
+            />
+        <View
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:background="#000000"/>
+        <TextView
+            android:layout_marginLeft="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="7sp"
+            android:text="THU"/>
+        <CheckBox
+            android:id="@+id/bit_3_detail"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckedBox_Setup_detail"
+            />
+        <View
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:background="#000000"/>
+        <TextView
+            android:layout_marginLeft="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="7sp"
+            android:text="FRI"/>
+        <CheckBox
+            android:id="@+id/bit_4_detail"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckedBox_Setup_detail"
+            />
+        <View
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:background="#000000"/>
+        <TextView
+            android:layout_marginLeft="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="7sp"
+            android:text="SAT"/>
+        <CheckBox
+            android:id="@+id/bit_5_detail"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckedBox_Setup_detail"
+            />
+        <View
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:background="#000000"/>
+        <TextView
+            android:layout_marginLeft="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="7sp"
+            android:text="SUN"/>
+        <CheckBox
+            android:id="@+id/bit_6_detail"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckedBox_Setup_detail"
+            />
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/tv_location_viewer"
         android:paddingLeft="17dp"

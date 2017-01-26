@@ -28,6 +28,8 @@ public class TodolistContract {
 
         public static final String TABLE_NAME="todolist";
         public static final String COLUMN_TITLE="title";
+        public static final String COLUMN_TIME = "time";
+        public static final String COLUMN_DAY_OF_WEEK="day_of_week";
         public static final String COLUMN_YEAR="year";
         public static final String COLUMN_MONTH="month";
         public static final String COLUMN_DATE="date";
@@ -36,5 +38,6 @@ public class TodolistContract {
         public static final String COLUMN_LOCATION="location";
         public static final String COLUMN_MEMO="memo";
         public static final String COLUMN_COMMENT="comment";
+        public static final String COLUMN_ALARM = "alarm";
     }
 }

@@ -8,9 +8,13 @@ import java.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -26,13 +30,17 @@ import java.sql.Time;
 
 public class AddTodoTaskActivity extends AppCompatActivity {
 
-
+    int check_day_of_week = 0;
     EditText mTitle;
     TextView mLocation;
     EditText mMemo;
 
     TextView mDate;
     TextView mTime;
+    LinearLayout mLinear;
+
+    SwitchCompat mAlarm;
+    int checkAlarm = 0;
 
 
     static final int DATE_DIALOG_ID = 1;
@@ -57,6 +65,20 @@ public class AddTodoTaskActivity extends AppCompatActivity {
         mMemo = (EditText) findViewById(R.id.add_memo);
         mTime = (TextView) findViewById(R.id.add_time);
         mDate = (TextView) findViewById(R.id.add_date);
+        mLinear =(LinearLayout) findViewById(R.id.checkbox_parent);
+        mAlarm = (SwitchCompat) findViewById(R.id.bt_add_alarm);
+        mAlarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
+                if(isChecked){
+                    checkAlarm=1;
+                    return;
+                }else{
+                    checkAlarm=0;
+                    return;
+                }
+            }
+        });
 
         if(am_pm != 0) isAMorPM="PM";
         UpdateNow();
@@ -97,7 +119,16 @@ public class AddTodoTaskActivity extends AppCompatActivity {
             return;
         }
 
+
+        String TIME = String.format("%d%02d%02d%02d%02d",year,month,date, hour, minute);
+
+        Log.d("cotentValues", "insertValues");
         ContentValues contentValues = new ContentValues();
+        contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME, TIME);
+        contentValues.put(TodolistContract.TodolistEntry.COLUMN_DAY_OF_WEEK, check_day_of_week);
+        contentValues.put(TodolistContract.TodolistEntry.COLUMN_ALARM, checkAlarm);
+
+        Log.d("cotentValues", "insertValues after TIME");
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TITLE, inputTitle);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_MEMO, inputMemo);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_YEAR, year);
@@ -106,8 +137,11 @@ public class AddTodoTaskActivity extends AppCompatActivity {
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME_HOUR, HOUR_OF_DAY);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME_MINUTE, minute);
 
+        Log.d("cotentValues", "URI BUILDER");
         Uri uri = getContentResolver().insert(TodolistContract.TodolistEntry.CONTENT_URI, contentValues);
 
+
+        Log.d("cotentValues", "insertValues sucess");
         if(uri != null){
             Toast.makeText(this, uri.toString(), Toast.LENGTH_SHORT).show();
         }
@@ -115,12 +149,19 @@ public class AddTodoTaskActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //default == finish
+    }
 
     public String makeDate;
     DatePickerDialog.OnDateSetListener mDateSetListner =
             new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int R_year, int R_month, int R_date){
+                    mLinear.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+                    mDate.setBackgroundColor(getResources().getColor(android.R.color.white));
                     year = R_year;
                     month = R_month;
                     date = R_date;
@@ -171,6 +212,41 @@ public class AddTodoTaskActivity extends AppCompatActivity {
                 break;
         }
         return null;
+    }
+
+    public void onCheckedBox_Setup(View v){
+
+        mDate.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+        mLinear.setBackgroundColor(getResources().getColor(android.R.color.white));
+
+        int val = v.getId();
+        switch (val){
+            case R.id.bit_0 :
+                check_day_of_week |= (1<<0);
+                break;
+            case R.id.bit_1 :
+                check_day_of_week |= (1<<1);
+                break;
+            case R.id.bit_2 :
+                check_day_of_week |= (1<<2);
+                break;
+            case R.id.bit_3 :
+                check_day_of_week |= (1<<3);
+                break;
+            case R.id.bit_4 :
+                check_day_of_week |= (1<<4);
+                break;
+            case R.id.bit_5 :
+                check_day_of_week |= (1<<5);
+                break;
+            case R.id.bit_6 :
+                check_day_of_week |= (1<<6);
+                break;
+            default:
+                break;
+        }
+        Log.d("checkbox", String.valueOf(check_day_of_week));
+
     }
 
 

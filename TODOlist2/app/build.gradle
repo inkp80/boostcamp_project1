@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+//누구가가 안드로이드라는 블럭을 해석해 주어야 사용할 수 있음
+//dsl이 지원해주는 블럭..
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -9,7 +11,13 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        //버전 네임은 눈으로 보는 버전이다.
+        //눈에 보이는 버전으로는 몇 번째 인지 모린다..
+        //versionCode로 명시, 올라갈 수만 있고, 내려갈 수는 없음
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //android test는 두가지 존재
+        //해당 메소드를 검증하기 위해 = 유니 테스트, 일반적인 자바 머신에서 수행이 될 수도 있다.
+        //상당히 오래 걸린다 모바일에서 돌리면
     }
     buildTypes {
         release {
@@ -20,15 +28,23 @@ android {
 }
 
 dependencies {
+    //compile 앱에서 사용될 라이브러리
+    //
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    //fileTree = 로컬 디렉토리에서 갖고 오겠다.
+
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.1.0'
+    //support, 호환성 라이브러리
     testCompile 'junit:junit:4.12'
-
+    //testCompile = 유니테스트
     compile 'com.android.support:recyclerview-v7:25.0.1'
     compile 'com.android.support:design:25.0.1'
+
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 
     //Floating action button
 }
