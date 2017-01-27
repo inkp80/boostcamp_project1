@@ -1,7 +1,9 @@
 package com.example.macbook.todolist2;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
@@ -121,6 +123,45 @@ public class DetailActivity extends AppCompatActivity {
         if(activeAlarm == 1){
             detailSetAlarm.setChecked(true);
         }
+
+        //title TextView Changer
+        AlertDialog.Builder Title_alert = new AlertDialog.Builder(this);
+        Title_alert.setTitle("Title");
+        Title_alert.setMessage("Enter your input");
+        final EditText titleInput = new EditText(this);
+        Title_alert.setView(titleInput);
+        Title_alert.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                tvTimeViewer.setText(titleInput.getText().toString());
+            }
+        });
+        Title_alert.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+
+        AlertDialog.Builder Memo_alert = new AlertDialog.Builder(this);
+        Memo_alert.setTitle("Memo");
+        Memo_alert.setMessage("Enter your input");
+        final EditText memoInput = new EditText(this);
+        Memo_alert.setView(memoInput);
+        Memo_alert.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tvMemoViewer.setText(memoInput.getText().toString());
+            }
+        });
+        Memo_alert.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+
+
+
     }
 
     public void onCheckedBox_Setup_detail(View v) {
