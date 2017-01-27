@@ -205,12 +205,24 @@
         android:background="@android:drawable/edit_text"
         android:hint="Enter you comments!"/>
 
-    <android.support.v7.widget.SwitchCompat
-        android:padding="10dp"
-        android:layout_gravity="bottom|right"
-        android:id="@+id/detail_set_alarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:hint="Remind me! or.. not"/>
+    <LinearLayout
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.SwitchCompat
+            android:padding="10dp"
+            android:id="@+id/detail_set_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:hint="Remind me! or.. not"/>
+        <Button
+            android:id="@+id/detail_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SAVE CHANGE"/>
+
+    </LinearLayout>
 </LinearLayout>

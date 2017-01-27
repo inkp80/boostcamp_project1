@@ -1,5 +1,8 @@
 package com.example.macbook.todolist2;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -56,10 +59,26 @@ public class MainActivity extends AppCompatActivity implements
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
 
                 int id = (int) viewHolder.itemView.getTag();
-
                 String strID = Integer.toString(id);
                 Uri uri = TodolistContract.TodolistEntry.CONTENT_URI;
                 uri = uri.buildUpon().appendPath(strID).build();
+
+                //알람 해제
+                Cursor TEMP_CURSOR=
+                        getContentResolver().query(TodolistContract.TodolistEntry.CONTENT_URI,
+                        null, TodolistContract.TodolistEntry._ID + "=" + strID, null,
+                        TodolistContract.TodolistEntry.COLUMN_TIME);
+                TEMP_CURSOR.moveToFirst();
+                Log.d(LOG_TAG, TEMP_CURSOR.getString(TEMP_CURSOR.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_TITLE)));
+
+                int AlarmID = TEMP_CURSOR.getInt(TEMP_CURSOR.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_ALARMID));
+
+                Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
+                PendingIntent pendingIntent
+                        = PendingIntent.getBroadcast(getBaseContext(), AlarmID, intent, PendingIntent.FLAG_UPDATE_CURRENT );
+                AlarmManager alarmManager = (AlarmManager) getBaseContext().getSystemService(Context.ALARM_SERVICE);
+                alarmManager.cancel(pendingIntent);
+                //알람 해제
 
                 getContentResolver().delete(uri, null, null);
                 getSupportLoaderManager().restartLoader(TASK_LOADER_ID, null, MainActivity.this);

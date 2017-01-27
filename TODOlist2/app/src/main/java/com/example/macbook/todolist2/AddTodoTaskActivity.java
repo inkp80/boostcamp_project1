@@ -132,13 +132,14 @@ public class AddTodoTaskActivity extends AppCompatActivity {
         }
 
 
-        String TIME = String.format("%d%02d%02d%02d%02d",year,month,date, hour, minute);
+        String TIME = String.format("%d%02d%02d%02d%02d",year,month,date, HOUR_OF_DAY, minute);
 
-
+        int alarmID = (year*month+date*HOUR_OF_DAY+minute) % 9973;
         ContentValues contentValues = new ContentValues();
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME, TIME);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_DAY_OF_WEEK, check_day_of_week);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_ALARM, checkAlarm);
+        contentValues.put(TodolistContract.TodolistEntry.COLUMN_ALARMID, alarmID);
 
 
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TITLE, inputTitle);
@@ -149,8 +150,6 @@ public class AddTodoTaskActivity extends AppCompatActivity {
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME_HOUR, HOUR_OF_DAY);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME_MINUTE, minute);
 
-        int alarmID = (year*month+date*HOUR_OF_DAY+minute) % 9973;
-
 
         Uri uri = getContentResolver().insert(TodolistContract.TodolistEntry.CONTENT_URI, contentValues);
 
@@ -160,9 +159,15 @@ public class AddTodoTaskActivity extends AppCompatActivity {
             Toast.makeText(this, uri.toString(), Toast.LENGTH_SHORT).show();
         }
 
+        if(checkAlarm==0){
+            Log.d(TAG, "no alarm, finish");
+            finish();
+            return;
+        }
+
+        Log.d(TAG, "alarm is set");
         Calendar calendar=Calendar.getInstance();
         if(check_day_of_week == 0) {
-            Log.d(TAG,"!!");
             calendar.set(year, month, date, HOUR_OF_DAY, minute);
         } else {
             calendar.set(Calendar.HOUR_OF_DAY, HOUR_OF_DAY);
@@ -191,6 +196,18 @@ public class AddTodoTaskActivity extends AppCompatActivity {
         }
         finish();
 
+        /*pIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        if(Build.VERSION.SDK_INT >= 23)
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, setTime.getTimeInMillis(), pIntent);
+        else {
+            if(Build.VERSION.SDK_INT >= 19) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, setTime.getTimeInMillis(), pIntent);
+            } else {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, setTime.getTimeInMillis(), pIntent);
+            }
+        }
+        출처: http://citynetc.tistory.com/149 [cITy & ETC]
+        */
     }
 
     @Override

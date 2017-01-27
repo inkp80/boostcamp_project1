@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -131,9 +132,12 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         }
 
         holder.mText_time.setText(String.format("%02d:%02d", conv_hour, Integer.valueOf(minute)) + " " + AM_PM);
-
         holder.mText_title.setText(title);
         holder.mText_memo.setText(memo);
+        if(active_alarm == 1)
+            holder.mText_title.setTextColor(Color.RED);
+        else
+            holder.mText_title.setTextColor(Color.BLACK);
 
 
         //삭제 처리를 위해 커서에 id 부여할 것.
@@ -216,6 +220,9 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
 
             intent.putExtra(INTENT_LOCATION, location_to_delivery);
             mContext.startActivity(intent);
+        }
+        public void chageColor(){
+            mText_title.setTextColor(Color.BLACK);
         }
     }
 
