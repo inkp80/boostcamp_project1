@@ -44,6 +44,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Log.d(TAG, "DAYWEEK:"+ String.valueOf(Week_of_days));
         if(Week_of_days == 0){
             Log.d(TAG, "IN ONSHOT RECV");
+            NotificationUtils.NotificationSomethings(context);
         }
         else {
             Log.d(TAG, "IN WD RECV");

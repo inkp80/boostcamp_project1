@@ -3,14 +3,19 @@ package com.example.macbook.todolist2;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
@@ -103,6 +108,8 @@ public class DetailActivity extends AppCompatActivity {
     public CheckBox bit5Detail;
     @BindView(R.id.bit_6_detail)
     public CheckBox bit6Detail;
+    @BindView(R.id.TESTBUT)
+    public Button TESTBT;
     //SwitchCompat Reminder;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,6 +199,17 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showDialog(TIME_DIALOG_ID);
+            }
+        });
+
+
+
+
+
+        TESTBT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                NotificationUtils.NotificationSomethings(getBaseContext());
             }
         });
 
@@ -491,5 +509,4 @@ public class DetailActivity extends AppCompatActivity {
         }
         return null;
     }
-
 }
