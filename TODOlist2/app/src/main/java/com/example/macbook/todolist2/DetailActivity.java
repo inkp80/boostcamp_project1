@@ -71,6 +71,8 @@ public class DetailActivity extends AppCompatActivity {
     public int ALARM_ID, ALARM;
 
     int Dialog_hour, Dialog_minute;
+    int year_int, month_int, date_int, hour_int, minute_int;
+
 
     @BindView(R.id.checkbox_Linear)
     public LinearLayout checkBoxLinear;
@@ -117,16 +119,16 @@ public class DetailActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        String tmp = intent.getStringExtra(INTENT_MONTH); int tmp2 = Integer.valueOf(tmp) - 1;
+        String tmp = intent.getStringExtra(INTENT_MONTH); int tmp2 = Integer.valueOf(tmp);
         Log.d(TAG, tmp + ", " + tmp2);
 
 
         id = intent.getIntExtra(INTENT_ID, 0);
-        YEAR = intent.getStringExtra(INTENT_YEAR);
-        MONTH = String.valueOf(tmp2);
-        DATE = intent.getStringExtra(INTENT_DATE);
-        HOUR = intent.getStringExtra(INTENT_HOUR);
-        MININUTE = intent.getStringExtra(INTENT_MINUTE);
+        YEAR = intent.getStringExtra(INTENT_YEAR);      year_int = Integer.valueOf(YEAR);
+        MONTH = String.valueOf(tmp2);                   month_int = Integer.valueOf(MONTH);
+        DATE = intent.getStringExtra(INTENT_DATE);      date_int = Integer.valueOf(DATE);
+        HOUR = intent.getStringExtra(INTENT_HOUR);      hour_int = Integer.valueOf(HOUR);
+        MININUTE = intent.getStringExtra(INTENT_MINUTE);minute_int = Integer.valueOf(MININUTE);
         Dialog_hour = Integer.valueOf(HOUR);
         Dialog_minute = Integer.valueOf(MININUTE);
 
@@ -156,13 +158,14 @@ public class DetailActivity extends AppCompatActivity {
         tvMemoViewer.setText(intent.getStringExtra(INTENT_MEMO));
 
         tvDateViewer.setText
-                (intent.getStringExtra(INTENT_YEAR) + "/" +
-                        Integer.valueOf(MONTH) + 1 + "/" +
-                        intent.getStringExtra(INTENT_DATE));
+                (String.format("%d/%02d/%02d",year_int,(month_int + 1),date_int));
 
-        String time = String.format("%02d:%02d", conv_hour, Integer.valueOf(intent.getStringExtra(INTENT_MINUTE))) + isAMorPM;
-        DBtime = YEAR+MONTH+1+DATE+String.format("%02d%02d", conv_hour, Integer.valueOf(intent.getStringExtra(INTENT_MINUTE)));
-        Log.d(TAG,"FIRST TIME" + DBtime);
+        String time = String.format("%02d:%02d", conv_hour, minute_int) + isAMorPM;
+
+        //DBtime = YEAR+MONTH+1+DATE+String.format("%02d%02d", conv_hour, Integer.valueOf(intent.getStringExtra(INTENT_MINUTE)));
+        DBtime = String.format("%d%02d%02d%02d%02d", year_int, (month_int+1), date_int, hour_int, minute_int);
+
+        Log.d(TAG, "FIRST TIME" + DBtime);
         tvTimeViewer.setText(time);
 
         ALARM = intent.getIntExtra(INTENT_ALRAM, 0);
@@ -274,17 +277,14 @@ public class DetailActivity extends AppCompatActivity {
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_DATE, DATE);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME_HOUR, HOUR);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME_MINUTE, MININUTE);
-
         //contentValues.put(TodolistContract.TodolistEntry.COLUMN_LOCATION, LOCATION);
 
-        String TIME = String.format("%d%02d%02d%02d%02d",Integer.valueOf(YEAR), Integer.valueOf(MONTH), Integer.valueOf(DATE), Integer.valueOf(HOUR), Integer.valueOf(MININUTE));
+        String TIME = String.format("%d%02d%02d%02d%02d", year_int, (month_int + 1), date_int, hour_int, minute_int);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME, TIME);
 
-        //Uri uri = getContentResolver().insert(TodolistContract.TodolistEntry.CONTENT_URI, contentValues);
         Uri uri = TodolistContract.TodolistEntry.CONTENT_URI;
         uri = uri.buildUpon().appendPath(String.valueOf(id)).build();
         int retVal = getContentResolver().update(uri, contentValues, null, null);
-        Toast.makeText(this, String.valueOf(retVal), Toast.LENGTH_SHORT).show();
 
         if(ALARM==0){
             Log.d(TAG, "no alarm, finish");
@@ -295,7 +295,7 @@ public class DetailActivity extends AppCompatActivity {
         Log.d(TAG, "alarm is set");
         Calendar calendar=Calendar.getInstance();
         if(check_day_of_week == 0) {
-            calendar.set(Integer.valueOf(YEAR), Integer.valueOf(MONTH)-1, Integer.valueOf(DATE), Integer.valueOf(HOUR), Integer.valueOf(MININUTE));
+            calendar.set(Integer.valueOf(YEAR), Integer.valueOf(MONTH), Integer.valueOf(DATE), Integer.valueOf(HOUR), Integer.valueOf(MININUTE));
         } else {
             calendar.set(Calendar.HOUR_OF_DAY, Integer.valueOf(HOUR));
             calendar.set(Calendar.MINUTE, Integer.valueOf(MININUTE));
@@ -311,6 +311,8 @@ public class DetailActivity extends AppCompatActivity {
         intent.putExtra(TodoListAdapter.INTENT_ALRAM_ID, ALARM_ID);
         intent.putExtra(TodoListAdapter.INTENT_MEMO, inputMemo);
         intent.putExtra(TodoListAdapter.INTENT_DAY_OF_WEEK, check_day_of_week);
+        intent.putExtra(TodoListAdapter.INTENT_URI, String.valueOf(uri));
+        Log.d("URI is", String.valueOf(uri));
         PendingIntent pendingIntent
                 = PendingIntent.getBroadcast(getBaseContext(), ALARM_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT );
 
@@ -439,6 +441,12 @@ public class DetailActivity extends AppCompatActivity {
                 public void onDateSet(DatePicker view, int R_year, int R_month, int R_date){
                     checkBoxLinear.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
                     tvDateViewer.setBackgroundColor(getResources().getColor(android.R.color.white));
+
+                    year_int = R_year;
+                    month_int = R_month;
+                    date_int = R_date;
+
+
                     YEAR = String.valueOf(R_year);
                     MONTH = String.valueOf(R_month);
                     DATE = String.valueOf(R_date);
@@ -475,7 +483,7 @@ public class DetailActivity extends AppCompatActivity {
 
     void UpdateNow(){
         Log.d(TAG, "UPDATE NOW" + MONTH);
-        tvDateViewer.setText(YEAR + "/" + MONTH+1 + "/" + DATE);
+        tvDateViewer.setText(YEAR + "/" + (month_int+1) + "/" + DATE);
         tvTimeViewer.setText(String.format("%02d:%02d", Dialog_hour, Dialog_minute) + " " + isAMorPM);
         DBtime = YEAR+MONTH+DATE+String.format("%02d%02d", Dialog_hour, Dialog_minute);
         Log.d(TAG, DBtime + "!!!!!!");

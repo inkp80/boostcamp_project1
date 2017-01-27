@@ -82,6 +82,7 @@ public class AddTodoTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_todo_task_activity);
         ButterKnife.bind(this);
+        Log.d("MONTH is", String.valueOf(month));
 
         if (HOUR_OF_DAY < 12) {
             if (HOUR_OF_DAY == 0)
@@ -155,7 +156,7 @@ public class AddTodoTaskActivity extends AppCompatActivity {
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TITLE, inputTitle);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_MEMO, inputMemo);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_YEAR, year);
-        contentValues.put(TodolistContract.TodolistEntry.COLUMN_MONTH, month + 1);
+        contentValues.put(TodolistContract.TodolistEntry.COLUMN_MONTH, month);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_DATE, date);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME_HOUR, HOUR_OF_DAY);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME_MINUTE, minute);
@@ -199,6 +200,7 @@ public class AddTodoTaskActivity extends AppCompatActivity {
                 = PendingIntent.getBroadcast(getBaseContext(), alarmID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
+        Log.d(TAG, " TRI " + triggerTime +" VS " + "CUR " + CurrentTime);
         if (CurrentTime > triggerTime) {
             triggerTime = (CurrentTime - triggerTime);
             alarmManager.set(AlarmManager.RTC_WAKEUP, CurrentTime + triggerTime, pendingIntent);

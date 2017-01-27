@@ -18,6 +18,9 @@ import static com.example.macbook.todolist2.TodoListAdapter.INTENT_TITLE;
 public class Rebooted {
     //쿼리를 통해 커서를 받고, 등록된 모든 알람을 매니저에 재등록한다.
     String TAG = Rebooted.class.getName();
+
+
+
     public void RegistAlarms(Context mContext, Cursor cursor){
         Log.d(TAG, "Enter Register alarm");
         if(cursor.getCount() == 0)
