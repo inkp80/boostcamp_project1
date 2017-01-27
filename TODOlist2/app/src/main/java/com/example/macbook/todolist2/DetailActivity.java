@@ -108,8 +108,6 @@ public class DetailActivity extends AppCompatActivity {
     public CheckBox bit5Detail;
     @BindView(R.id.bit_6_detail)
     public CheckBox bit6Detail;
-    @BindView(R.id.TESTBUT)
-    public Button TESTBT;
     //SwitchCompat Reminder;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,16 +117,13 @@ public class DetailActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
+        String tmp = intent.getStringExtra(INTENT_MONTH); int tmp2 = Integer.valueOf(tmp) - 1;
+        Log.d(TAG, tmp + ", " + tmp2);
+
+
         id = intent.getIntExtra(INTENT_ID, 0);
-
-
         YEAR = intent.getStringExtra(INTENT_YEAR);
-        String tmp = intent.getStringExtra(INTENT_MONTH);
-        int tmp2 = Integer.valueOf(tmp) - 1;
         MONTH = String.valueOf(tmp2);
-        Log.d(TAG, "MONTH" + MONTH);
-
-        MONTH = String.valueOf(Integer.valueOf(MONTH));
         DATE = intent.getStringExtra(INTENT_DATE);
         HOUR = intent.getStringExtra(INTENT_HOUR);
         MININUTE = intent.getStringExtra(INTENT_MINUTE);
@@ -199,17 +194,6 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showDialog(TIME_DIALOG_ID);
-            }
-        });
-
-
-
-
-
-        TESTBT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                NotificationUtils.NotificationSomethings(getBaseContext());
             }
         });
 

@@ -39,12 +39,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         Log.d(TAG, Title);
         Log.d(TAG, Memo);
 
-        int todayIs2 = Calendar.DAY_OF_WEEK-2;
+        int todayIs2 = Calendar.DAY_OF_WEEK-1;
         Log.d(TAG, "Today is " + todayIs2+" , " + (1<<todayIs2));
         Log.d(TAG, "DAYWEEK:"+ String.valueOf(Week_of_days));
         if(Week_of_days == 0){
             Log.d(TAG, "IN ONSHOT RECV");
-            NotificationUtils.NotificationSomethings(context);
+            NotificationUtils.NotificationSomethings(context, intent);
         }
         else {
             Log.d(TAG, "IN WD RECV");
@@ -53,7 +53,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                     = PendingIntent.getBroadcast(context, alarmID, intent, PendingIntent.FLAG_UPDATE_CURRENT );
             cancelAlarm(pendingIntent, context);
 
-            int todayIs = Calendar.DAY_OF_WEEK - 2;
+            int todayIs = Calendar.DAY_OF_WEEK - 1;
             if((Week_of_days & (1<<todayIs))==0){
                 Log.d(TAG, "WD, not today");
                 alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+24*60*60*1000, pendingIntent);
@@ -61,7 +61,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             }
             Log.d(TAG, "WD is Today");
             alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+(24*60*60*1000), pendingIntent);
-            //NotificationUtils.alarming(context, dat, val);
+            NotificationUtils.NotificationSomethings(context, intent);
         }
 
     }

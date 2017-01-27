@@ -28,11 +28,8 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import com.example.macbook.todolist2.data.TodolistContract;
-
 import org.w3c.dom.Text;
-
 import java.sql.Time;
 
 //SharedPreference를 쓰시던지,
@@ -120,13 +117,9 @@ public class AddTodoTaskActivity extends AppCompatActivity {
 
         UpdateNow();
 
-        //String inDate = new java.text.SimpleDateFormat("yyyyMMdd").format(new java.util.Date());
-        //String inTime = new java.text.SimpleDateFormat("HHmmss").format(new java.util.Date());
-
         mDate.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(AddTodoTaskActivity.this, "why??",Toast.LENGTH_SHORT).show();
                 showDialog(DATE_DIALOG_ID);
             }
         });
@@ -145,7 +138,6 @@ public class AddTodoTaskActivity extends AppCompatActivity {
 
         if (inputTitle.length() == 0) {
             Toast.makeText(this, "INPUT ERROR, title fill title", Toast.LENGTH_LONG).show();
-            //mTitle.requestFocus();
             return;
         }
 
@@ -201,6 +193,8 @@ public class AddTodoTaskActivity extends AppCompatActivity {
         intent.putExtra(TodoListAdapter.INTENT_ALRAM_ID, alarmID);
         intent.putExtra(TodoListAdapter.INTENT_MEMO, inputMemo);
         intent.putExtra(TodoListAdapter.INTENT_DAY_OF_WEEK, check_day_of_week);
+        intent.putExtra(TodoListAdapter.INTENT_URI, String.valueOf(uri));
+        Log.d("URI is", String.valueOf(uri));
         PendingIntent pendingIntent
                 = PendingIntent.getBroadcast(getBaseContext(), alarmID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -303,7 +297,6 @@ public class AddTodoTaskActivity extends AppCompatActivity {
 
         switch (val) {
             case R.id.bit_0 :
-                Log.d(TAG, "what?!!!!!!!!");
                 if (bit0.isChecked()) {
                     check_day_of_week |= (1);
                 } else {
