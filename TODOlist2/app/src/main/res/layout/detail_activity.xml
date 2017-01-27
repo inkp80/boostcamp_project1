@@ -48,6 +48,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/checkbox_Linear"
         android:layout_marginLeft="13dp"
         android:gravity="center"
         android:orientation="horizontal"

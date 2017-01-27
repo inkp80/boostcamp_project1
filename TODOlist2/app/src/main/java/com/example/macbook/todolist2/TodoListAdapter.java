@@ -203,6 +203,8 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(mContext, DetailActivity.class);
+
+            intent.putExtra(INTENT_ID, id_to_delivery);
             intent.putExtra(INTENT_TIME, time_to_delivery);
             intent.putExtra(INTENT_DAY_OF_WEEK, dayofweek_to_delivery);
             intent.putExtra(INTENT_ALRAM, activeAlarm_to_delivery);
