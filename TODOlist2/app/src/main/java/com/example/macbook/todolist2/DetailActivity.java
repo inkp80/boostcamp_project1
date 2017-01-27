@@ -55,6 +55,8 @@ import static com.example.macbook.todolist2.TodoListAdapter.INTENT_YEAR;
  * Created by macbook on 2017. 1. 24..
  */
 
+
+//알람 시간 변경시 삭제 후 재등록이 필요함...
 //쿼리 업데이트문
 //resolver.update(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, values, "_id=" + id, null);
 public class DetailActivity extends AppCompatActivity {
