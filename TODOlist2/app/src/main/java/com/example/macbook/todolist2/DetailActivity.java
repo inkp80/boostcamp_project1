@@ -151,50 +151,49 @@ public class DetailActivity extends AppCompatActivity {
             default:
                 break;
         }
-        Log.d("checkbox", String.valueOf(check_day_of_week));
 
     }
 
     public void Update_checked() {
-        Log.d(TAG, "enter Update, check val is" + check_day_of_week);
+
         if (check_day_of_week == 0)
             return;
         tvDateViewer.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
         for (int i = 0; i < 7; i++) {
 
-            Log.d(TAG, i + ", val if For, " + String.valueOf(1<<i));
+
             int valueOfandOp = check_day_of_week & (1<<i);
-            Log.d(TAG, "!!!!"+String.valueOf(valueOfandOp));
+
             if (valueOfandOp != 0) {
 
-                Log.d(TAG, "ENTER if case" + i);
+
                switch (i) {
                    case 0:
-                       Log.d(TAG, "MON");
+
                        bit0Detail.setChecked(true);
                        break;
                    case 1:
-                       Log.d(TAG, "TUE");
+
                        bit1Detail.setChecked(true);
                        break;
                    case 2:
-                       Log.d(TAG, "WED");
+
                        bit2Detail.setChecked(true);
                        break;
                    case 3:
-                       Log.d(TAG, "THU");
+
                        bit3Detail.setChecked(true);
                        break;
                    case 4:
-                       Log.d(TAG, "FRI");
+
                        bit4Detail.setChecked(true);
                        break;
                    case 5:
-                       Log.d(TAG, "SAT");
+
                        bit5Detail.setChecked(true);
                        break;
                    case 6:
-                       Log.d(TAG, "SUN");
+
                        bit6Detail.setChecked(true);
                        break;
                    default:

@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="7sp"
-            android:text="MON"/>
+            android:text="SUN"/>
         <CheckBox
             android:id="@+id/bit_0_detail"
             android:textAlignment="center"
@@ -75,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="7sp"
-            android:text="TUE"/>
+            android:text="MON"/>
         <CheckBox
             android:id="@+id/bit_1_detail"
             android:textAlignment="center"
@@ -92,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="7sp"
-            android:text="WED"/>
+            android:text="TUE"/>
         <CheckBox
             android:id="@+id/bit_2_detail"
             android:textAlignment="center"
@@ -109,7 +109,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="7sp"
-            android:text="THU"/>
+            android:text="WED"/>
         <CheckBox
             android:id="@+id/bit_3_detail"
             android:textAlignment="center"
@@ -126,7 +126,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="7sp"
-            android:text="FRI"/>
+            android:text="THU"/>
         <CheckBox
             android:id="@+id/bit_4_detail"
             android:textAlignment="center"
@@ -143,7 +143,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="7sp"
-            android:text="SAT"/>
+            android:text="FRI"/>
         <CheckBox
             android:id="@+id/bit_5_detail"
             android:textAlignment="center"
@@ -160,7 +160,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="7sp"
-            android:text="SUN"/>
+            android:text="SAT"/>
         <CheckBox
             android:id="@+id/bit_6_detail"
             android:textAlignment="center"

@@ -27,6 +27,8 @@
             android:name="com.example.macbook.todolist2.data.TaskContentProvider"
             android:authorities="com.example.macbook.todolist2"
             android:exported="true"/>
+        <receiver android:name=".AlarmReceiver"/>
+
     </application>
 
 </manifest>

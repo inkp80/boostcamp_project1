@@ -39,5 +39,6 @@ public class TodolistContract {
         public static final String COLUMN_MEMO="memo";
         public static final String COLUMN_COMMENT="comment";
         public static final String COLUMN_ALARM = "alarm";
+        public static final String COLUMN_ALARMID = "alarm_id";
     }
 }

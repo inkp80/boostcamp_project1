@@ -34,6 +34,7 @@ public class TodolistDbHelper extends SQLiteOpenHelper {
                 TodolistContract.TodolistEntry.COLUMN_LOCATION + " TEXT, " +
                 TodolistContract.TodolistEntry.COLUMN_MEMO + " TEXT, " +
                 TodolistContract.TodolistEntry.COLUMN_ALARM + " INTEGER, " +
+                TodolistContract.TodolistEntry.COLUMN_ALARMID + " INTEGER, " +
                 TodolistContract.TodolistEntry.COLUMN_COMMENT + " TEXT" +
                 "); ";
         sqLiteDatabase.execSQL(SQL_CREATE_TODOLIST);

@@ -1,5 +1,7 @@
 package com.example.macbook.todolist2;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -17,6 +19,7 @@ import com.example.macbook.todolist2.data.TodolistContract;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by macbook on 2017. 1. 22..
@@ -31,6 +34,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
     public final static String INTENT_TIME = "intent_time";
     public final static String INTENT_DAY_OF_WEEK = "intent_day_of_week";
     public final static String INTENT_ALRAM = "intent_alarm";
+    public final static String INTENT_ALRAM_ID = "intent_alarm_id";
 
     public final static String INTENT_TITLE = "intent_title";
     public final static String INTENT_MEMO = "intent_memo";
@@ -59,7 +63,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
     @Override
     public void onBindViewHolder(TodoListViewHolder holder, int position) {
 
-        Log.d("onBinding", "calling onBinding");
 
         int idx_id = mCursor.getColumnIndex(TodolistContract.TodolistEntry._ID);
         int idx_title = mCursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_TITLE);
@@ -76,6 +79,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         int idx_alarm = mCursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_ALARM);
 
 
+
         mCursor.moveToPosition(position);
         final int id = mCursor.getInt(idx_id);
         String title = mCursor.getString(idx_title);
@@ -84,7 +88,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         String hour = mCursor.getString(idx_hour);
         String minute =  mCursor.getString(idx_minute);
 
-        Log.d("DEBUG_ADAPTER", "BINDING CURSOR");
 
         String YEAR = mCursor.getString(idx_year);
         String MONTH = mCursor.getString(idx_month);
@@ -94,7 +97,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         int day_Of_week = mCursor.getInt(idx_dayOfweek);
         int active_alarm = mCursor.getInt(idx_alarm);
 
-        Log.d(TAG, "Get from cursor : dayofWEEK");
 
         //전달될 인자 저장
 
@@ -134,7 +136,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         holder.mText_memo.setText(memo);
 
 
-        Log.d("DEBUG_ADAPTER","CURSOR 5---------");
         //삭제 처리를 위해 커서에 id 부여할 것.
         //홀더에 데이터 bind 처리
 
@@ -149,19 +150,17 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
     }
 
     public Cursor swapCursor(Cursor newCursor){
-        Log.d("swap Cursor", "doing ***************");
         if(mCursor == newCursor) {
-            Log.d("swap Cursor", "Cursor are not changed");
             return null;
-        } //기존의 커서를 닫고,
+        }
 
-        Log.d("swap Cursor", "Cursor changed");
         Cursor changedCursor = newCursor;
         mCursor=newCursor;
 
         if(newCursor != null){
             this.notifyDataSetChanged();
         }
+        //RegistAlarms(mCursor);
         return changedCursor;
     }
 
@@ -221,4 +220,97 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
     }
 
 
+    public void RegistAlarms(Cursor cursor){
+
+        Log.d(TAG, "Enter Register alarm");
+        if(cursor.getCount() == 0)
+            return;
+        cursor.moveToFirst();
+
+        long CurrentTime = System.currentTimeMillis();
+        AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+
+        while(true) {
+            long triggerTime = 0;
+            //long intervalTime = 24*60*60*1000;
+            Calendar calendar = Calendar.getInstance();
+
+            int ID = cursor.getInt(cursor.getColumnIndex(TodolistContract.TodolistEntry._ID));
+
+            Intent intent = new Intent(mContext, AlarmReceiver.class);
+
+
+            int day_of_weeks = cursor.
+                    getInt(cursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_DAY_OF_WEEK));
+
+            String alarmTitle = cursor.getString(cursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_TITLE));
+            String alarmMemo = cursor.getString(cursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_MEMO));
+
+
+            intent.putExtra(INTENT_DAY_OF_WEEK, day_of_weeks);
+            intent.putExtra(INTENT_TITLE, alarmTitle);
+            intent.putExtra(INTENT_MEMO, alarmMemo);
+
+            int set_hour = Integer.
+                    valueOf(cursor.getString(cursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_TIME_HOUR)));
+            int set_minute = Integer.
+                    valueOf(cursor.getString(cursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_TIME_MINUTE)));
+            int set_year = Integer.
+                    valueOf(cursor.getString(cursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_YEAR)));
+            int set_month = Integer.
+                    valueOf(cursor.getString(cursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_MONTH)));
+            int set_date = Integer.
+                    valueOf(cursor.getString(cursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_DATE)));
+
+
+            if (day_of_weeks == 0) {
+                Log.d("TAG", "SHOT");
+
+
+                calendar.set(set_year, set_month-1, set_date, set_hour, set_minute);
+                triggerTime = calendar.getTimeInMillis();
+                if(CurrentTime < triggerTime){
+
+                   //triggerTime =  24*60*60*1000 - (CurrentTime - triggerTime);
+
+                PendingIntent pendingIntent
+                        = PendingIntent.getBroadcast(mContext, ID, intent, PendingIntent.FLAG_UPDATE_CURRENT );
+                alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+                }
+            }
+            else {
+                Log.d("TAG", "WD");
+
+                //요일 반복이 포함되었을 경우
+                intent.putExtra(INTENT_DAY_OF_WEEK, day_of_weeks);
+                calendar.set(Calendar.HOUR_OF_DAY, set_hour);
+                calendar.set(Calendar.MINUTE, set_minute);
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.MILLISECOND, 0);
+
+                triggerTime = calendar.getTimeInMillis();
+                if(CurrentTime > triggerTime){
+                    triggerTime =  24*60*60*1000 - (CurrentTime - triggerTime);
+                }
+                PendingIntent pendingIntent
+                        = PendingIntent.getBroadcast(mContext, ID, intent, PendingIntent.FLAG_UPDATE_CURRENT );
+                alarmManager.set(AlarmManager.RTC_WAKEUP, CurrentTime+triggerTime, pendingIntent);
+            }
+
+            if (cursor.isLast()) {
+                return;
+            } cursor.moveToNext();
+        }
+    }
+
+
+/*
+   private void cancelAlarm()
+    {
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        PendingIntent pendingIntent
+                = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT );
+        this.mAlarmManager.cancel(pending);
+    }
+*/
 }

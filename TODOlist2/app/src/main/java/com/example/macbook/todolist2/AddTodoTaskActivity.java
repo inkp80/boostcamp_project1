@@ -1,10 +1,15 @@
 package com.example.macbook.todolist2;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import java.util.Calendar;
+
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +35,7 @@ import java.sql.Time;
 
 public class AddTodoTaskActivity extends AppCompatActivity {
 
+    String TAG = AddTodoTaskActivity.class.getName();
     int check_day_of_week = 0;
     EditText mTitle;
     TextView mLocation;
@@ -50,15 +56,27 @@ public class AddTodoTaskActivity extends AppCompatActivity {
     int year = c.get(Calendar.YEAR);
     int month = c.get(Calendar.MONTH);
     int date = c.get(Calendar.DATE);
-    int hour = c.get(Calendar.HOUR);
+    int hour = c.get(Calendar.HOUR_OF_DAY);
     int minute = c.get(Calendar.MINUTE);
-    public final int am_pm =  c.get(Calendar.AM_PM);
     int HOUR_OF_DAY=c.get(Calendar.HOUR_OF_DAY);
-    String isAMorPM = "AM";
+    String isAMorPM;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_todo_task_activity);
+
+        if(HOUR_OF_DAY < 12) {
+            if(HOUR_OF_DAY==0)
+                HOUR_OF_DAY = 12;
+            isAMorPM = "AM";
+        } else if(HOUR_OF_DAY == 12){
+            isAMorPM = "PM";
+        } else {
+            HOUR_OF_DAY-=12;
+            isAMorPM = "PM";
+        }
+
 
         mTitle = (EditText) findViewById(R.id.add_title);
         mLocation = (TextView) findViewById(R.id.add_location);
@@ -80,7 +98,6 @@ public class AddTodoTaskActivity extends AppCompatActivity {
             }
         });
 
-        if(am_pm != 0) isAMorPM="PM";
         UpdateNow();
 
         //String inDate = new java.text.SimpleDateFormat("yyyyMMdd").format(new java.util.Date());
@@ -101,11 +118,6 @@ public class AddTodoTaskActivity extends AppCompatActivity {
         });
     }
 
-    public void onClicked(View view){
-        Toast.makeText(this, "do nothing", Toast.LENGTH_LONG).show();
-        return;
-    }
-
 
 
     public void onClickAddTask(View view){
@@ -122,31 +134,63 @@ public class AddTodoTaskActivity extends AppCompatActivity {
 
         String TIME = String.format("%d%02d%02d%02d%02d",year,month,date, hour, minute);
 
-        Log.d("cotentValues", "insertValues");
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME, TIME);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_DAY_OF_WEEK, check_day_of_week);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_ALARM, checkAlarm);
 
-        Log.d("cotentValues", "insertValues after TIME");
+
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TITLE, inputTitle);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_MEMO, inputMemo);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_YEAR, year);
-        contentValues.put(TodolistContract.TodolistEntry.COLUMN_MONTH, month);
+        contentValues.put(TodolistContract.TodolistEntry.COLUMN_MONTH, month+1);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_DATE, date);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME_HOUR, HOUR_OF_DAY);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME_MINUTE, minute);
 
-        Log.d("cotentValues", "URI BUILDER");
+        int alarmID = (year*month+date*HOUR_OF_DAY+minute) % 9973;
+
+
         Uri uri = getContentResolver().insert(TodolistContract.TodolistEntry.CONTENT_URI, contentValues);
 
 
-        Log.d("cotentValues", "insertValues sucess");
+
         if(uri != null){
             Toast.makeText(this, uri.toString(), Toast.LENGTH_SHORT).show();
         }
-        //uri의 처리가 필요한가?
+
+        Calendar calendar=Calendar.getInstance();
+        if(check_day_of_week == 0) {
+            Log.d(TAG,"!!");
+            calendar.set(year, month, date, HOUR_OF_DAY, minute);
+        } else {
+            calendar.set(Calendar.HOUR_OF_DAY, HOUR_OF_DAY);
+            calendar.set(Calendar.MINUTE, minute);
+        }
+
+
+        long CurrentTime = System.currentTimeMillis();
+        long triggerTime = calendar.getTimeInMillis();
+
+        AlarmManager alarmManager = (AlarmManager)getBaseContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
+        intent.putExtra(TodoListAdapter.INTENT_TITLE, inputTitle);
+        intent.putExtra(TodoListAdapter.INTENT_ALRAM_ID, alarmID);
+        intent.putExtra(TodoListAdapter.INTENT_MEMO, inputMemo);
+        intent.putExtra(TodoListAdapter.INTENT_DAY_OF_WEEK, check_day_of_week);
+        PendingIntent pendingIntent
+                = PendingIntent.getBroadcast(getBaseContext(), alarmID, intent, PendingIntent.FLAG_UPDATE_CURRENT );
+
+
+        if(CurrentTime > triggerTime){
+            triggerTime =  (CurrentTime - triggerTime);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, CurrentTime + triggerTime, pendingIntent);
+        }else {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        }
         finish();
+
     }
 
     @Override
@@ -196,8 +240,7 @@ public class AddTodoTaskActivity extends AppCompatActivity {
 
 
     void UpdateNow(){
-        month++;
-        mDate.setText(year + "/" + month + "/" + date);
+        mDate.setText(year + "/" + (month+1) + "/" + date);
         mTime.setText(String.format("%02d:%02d", hour, minute) + " " + isAMorPM);
     }
 
