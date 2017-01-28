@@ -11,6 +11,7 @@ import java.util.Calendar;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
@@ -202,25 +203,19 @@ public class AddTodoTaskActivity extends AppCompatActivity {
 
         Log.d(TAG, " TRI " + triggerTime +" VS " + "CUR " + CurrentTime);
         if (CurrentTime > triggerTime) {
-            triggerTime = (CurrentTime - triggerTime);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, CurrentTime + triggerTime, pendingIntent);
-        } else {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            triggerTime = CurrentTime + (CurrentTime - triggerTime);
+            //alarmManager.set(AlarmManager.RTC_WAKEUP, CurrentTime + triggerTime, pendingIntent);
         }
-        finish();
-
-        /*pIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         if(Build.VERSION.SDK_INT >= 23)
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, setTime.getTimeInMillis(), pIntent);
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
         else {
             if(Build.VERSION.SDK_INT >= 19) {
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, setTime.getTimeInMillis(), pIntent);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
             } else {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, setTime.getTimeInMillis(), pIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
             }
         }
-        출처: http://citynetc.tistory.com/149 [cITy & ETC]
-        */
+        finish();
     }
 
     @Override

@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
@@ -55,6 +56,8 @@ import static com.example.macbook.todolist2.TodoListAdapter.INTENT_YEAR;
  * Created by macbook on 2017. 1. 24..
  */
 
+
+//알람 시간 변경시 삭제 후 재등록이 필요함...
 //쿼리 업데이트문
 //resolver.update(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, values, "_id=" + id, null);
 public class DetailActivity extends AppCompatActivity {
@@ -318,10 +321,16 @@ public class DetailActivity extends AppCompatActivity {
 
 
         if(CurrentTime > triggerTime){
-            triggerTime =  (CurrentTime - triggerTime);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, CurrentTime + triggerTime, pendingIntent);
-        }else {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            triggerTime =  CurrentTime + (CurrentTime - triggerTime);
+        }
+        if(Build.VERSION.SDK_INT >= 23)
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+        else {
+            if(Build.VERSION.SDK_INT >= 19) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+            } else {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+            }
         }
         finish();
     }

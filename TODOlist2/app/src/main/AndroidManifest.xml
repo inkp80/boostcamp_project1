@@ -38,6 +38,7 @@
             </intent-filter>
         </receiver>
 
+        <service android:name=".Rebooted"/>
     </application>
 
 </manifest>

@@ -18,9 +18,8 @@ public class RebootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             Intent RebootIntent = new Intent(context, Rebooted.class);
-            Cursor cursor = context.getContentResolver()
-                    .query(TodolistContract.TodolistEntry.CONTENT_URI, null, null, null, TodolistContract.TodolistEntry.COLUMN_TIME);
-            Log.d(TAG, "BOOT COMPLETE," + cursor.getCount());
+            NotificationUtils.NotificationSomethings(context, intent);
+            context.startService(RebootIntent);
         } else {
             Log.e(TAG, "Received unexpected intent " + intent.toString());
         }
