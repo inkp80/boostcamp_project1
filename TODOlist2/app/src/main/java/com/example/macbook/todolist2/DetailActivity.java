@@ -46,6 +46,7 @@ import static com.example.macbook.todolist2.TodoListAdapter.INTENT_DATE;
 import static com.example.macbook.todolist2.TodoListAdapter.INTENT_DAY_OF_WEEK;
 import static com.example.macbook.todolist2.TodoListAdapter.INTENT_HOUR;
 import static com.example.macbook.todolist2.TodoListAdapter.INTENT_ID;
+import static com.example.macbook.todolist2.TodoListAdapter.INTENT_LOCATION;
 import static com.example.macbook.todolist2.TodoListAdapter.INTENT_MEMO;
 import static com.example.macbook.todolist2.TodoListAdapter.INTENT_MINUTE;
 import static com.example.macbook.todolist2.TodoListAdapter.INTENT_MONTH;
@@ -76,6 +77,7 @@ public class DetailActivity extends AppCompatActivity {
     int Dialog_hour, Dialog_minute;
     int year_int, month_int, date_int, hour_int, minute_int;
 
+    public static String locationStr;
 
     @BindView(R.id.checkbox_Linear)
     public LinearLayout checkBoxLinear;
@@ -86,8 +88,6 @@ public class DetailActivity extends AppCompatActivity {
     public TextView tvDateViewer;
     @BindView(R.id.tv_time_viewer)
     public TextView tvTimeViewer;
-    @BindView(R.id.tv_location_viewer)
-    public TextView tvLocationViewer;
     @BindView(R.id.tv_memo_viewer)
     public TextView tvMemoViewer;
     @BindView(R.id.ed_comment_viewer)
@@ -115,11 +115,14 @@ public class DetailActivity extends AppCompatActivity {
     public CheckBox bit6Detail;
     //SwitchCompat Reminder;
 
+    public static TextView tvLocationViewer;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_activity);
         ButterKnife.bind(this);
 
+        tvLocationViewer = (TextView) findViewById(R.id.tv_location_viewer);
 
         Intent intent = getIntent();
         String tmp = intent.getStringExtra(INTENT_MONTH); int tmp2 = Integer.valueOf(tmp);
@@ -134,6 +137,8 @@ public class DetailActivity extends AppCompatActivity {
         MININUTE = intent.getStringExtra(INTENT_MINUTE);minute_int = Integer.valueOf(MININUTE);
         Dialog_hour = Integer.valueOf(HOUR);
         Dialog_minute = Integer.valueOf(MININUTE);
+
+        LOCATION = intent.getStringExtra(INTENT_LOCATION);
 
         check_day_of_week = intent.getIntExtra(INTENT_DAY_OF_WEEK, 0);
         Update_checked();
@@ -159,6 +164,7 @@ public class DetailActivity extends AppCompatActivity {
 
         tvTitleViewer.setText(intent.getStringExtra(INTENT_TITLE));
         tvMemoViewer.setText(intent.getStringExtra(INTENT_MEMO));
+        tvLocationViewer.setText(LOCATION);
 
         tvDateViewer.setText
                 (String.format("%d/%02d/%02d",year_int,(month_int + 1),date_int));
@@ -202,7 +208,6 @@ public class DetailActivity extends AppCompatActivity {
                 showDialog(TIME_DIALOG_ID);
             }
         });
-
     }
 
     @OnClick(R.id.tv_id_viewer)
@@ -280,7 +285,7 @@ public class DetailActivity extends AppCompatActivity {
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_DATE, DATE);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME_HOUR, HOUR);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME_MINUTE, MININUTE);
-        //contentValues.put(TodolistContract.TodolistEntry.COLUMN_LOCATION, LOCATION);
+        contentValues.put(TodolistContract.TodolistEntry.COLUMN_LOCATION, locationStr);
 
         String TIME = String.format("%d%02d%02d%02d%02d", year_int, (month_int + 1), date_int, hour_int, minute_int);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME, TIME);
@@ -509,5 +514,19 @@ public class DetailActivity extends AppCompatActivity {
                 break;
         }
         return null;
+    }
+
+
+    public static void settingLocation(String locStr){
+        tvLocationViewer.setText(locStr);
+        locationStr = locStr;
+        return;
+    }
+
+    @OnClick(R.id.tv_location_viewer)
+    public void clickLocation(View view){
+        Intent intent = new Intent(this, AddressActivity.class);
+        intent.putExtra("caller", "Detail");
+        startActivity(intent);
     }
 }

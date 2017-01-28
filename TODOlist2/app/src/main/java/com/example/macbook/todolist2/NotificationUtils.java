@@ -29,6 +29,7 @@ public class NotificationUtils {
     public static void NotificationSomethings(Context context, Intent intent) {
         Resources res = context.getResources();
         Intent notificationIntent = new Intent(context, MainActivity.class);
+        notificationIntent.setAction("NOTI");
 
         String Title = intent.getStringExtra(INTENT_TITLE);
         String Memo = intent.getStringExtra(INTENT_MEMO);
@@ -54,7 +55,7 @@ public class NotificationUtils {
                 .setAutoCancel(true)
                 .setWhen(System.currentTimeMillis())
                 .setDefaults(Notification.DEFAULT_ALL);
-        Notification.D
+        //Notification.D
         //action 추가하여 추가 알람 및 확인 만들기
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {

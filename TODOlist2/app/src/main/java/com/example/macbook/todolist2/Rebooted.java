@@ -87,7 +87,7 @@ public class Rebooted extends IntentService{
 
             if (checkAlarm == 0) {
                 if (cursor.isLast()) {
-                    return;
+                    break;
                 } else {
                     cursor.moveToNext();
                     continue;
@@ -145,11 +145,10 @@ public class Rebooted extends IntentService{
 
 
             if (cursor.isLast()) {
-                return;
+                break;
             }
             cursor.moveToNext();
         }
-
     }
 
 }

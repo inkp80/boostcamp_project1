@@ -80,6 +80,9 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         int idx_dayOfweek = mCursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_DAY_OF_WEEK);
         int idx_alarm = mCursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_ALARM);
 
+        int idx_loc = mCursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_LOCATION);
+
+
 
 
         mCursor.moveToPosition(position);
@@ -99,6 +102,8 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         int day_Of_week = mCursor.getInt(idx_dayOfweek);
         int active_alarm = mCursor.getInt(idx_alarm);
 
+        String LOC = mCursor.getString(idx_loc);
+
 
         //전달될 인자 저장
 
@@ -115,6 +120,8 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         holder.year_to_delivery = YEAR;
         holder.month_to_delivery = MONTH;
         holder.date_to_delivery = DATE;
+
+        holder.location_to_delivery = LOC;
 
         //뷰 아이템에 데이터 결합
         holder.itemView.setTag(id);
@@ -165,7 +172,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         if(newCursor != null){
             this.notifyDataSetChanged();
         }
-        //RegistAlarms(mCursor);
         return changedCursor;
     }
 

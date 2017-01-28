@@ -113,36 +113,38 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onStart(){
         super.onStart();
-        Bundle extras = getIntent().getExtras();
-        if(extras==null){
-            return;
-        } else {
-            Log.d(LOG_TAG, "notification accepted");
-            int notification_id = extras.getInt("NOTIFICATION_ID", 0);
-            int isWD = extras.getInt(INTENT_DAY_OF_WEEK, 0);
-            int ALARM_swt = 0;
-            String TITLE = extras.getString(INTENT_TITLE) + "(DONE)";
+        /*Bundle extras = getIntent().getExtras();
+        if(getIntent().getAction() == "NOTI") {
+            if (extras == null) {
+                return;
+            } else {
+                Log.d(LOG_TAG, "notification accepted");
+                int notification_id = extras.getInt("NOTIFICATION_ID", 0);
+                int isWD = extras.getInt(INTENT_DAY_OF_WEEK, 0);
+                int ALARM_swt = 0;
+                String TITLE = extras.getString(INTENT_TITLE) + "(DONE)";
 
-            Log.d(LOG_TAG, "is here? : " + TITLE);
-            Uri intent_uri =Uri.parse(extras.getString(TodoListAdapter.INTENT_URI));
+                Log.d(LOG_TAG, "is here? : " + TITLE);
+                Uri intent_uri = Uri.parse(extras.getString(TodoListAdapter.INTENT_URI));
 
-            if(isWD==0) { //one shot의 경우
-                Log.d(LOG_TAG, "notification accepted1");
-                ContentValues contentValues = new ContentValues();
-                Log.d(LOG_TAG, "notification accepted2");
-                contentValues.put(TodolistContract.TodolistEntry.COLUMN_ALARM, ALARM_swt);
-                contentValues.put(TodolistContract.TodolistEntry.COLUMN_TITLE, TITLE);
-                Log.d(LOG_TAG, "notification accepted3");
-                getContentResolver().update(intent_uri, contentValues, null, null);
-                Log.d(LOG_TAG, "notification accepted4");
+                if (isWD == 0) { //one shot의 경우
+
+                    ContentValues contentValues = new ContentValues();
+
+                    contentValues.put(TodolistContract.TodolistEntry.COLUMN_ALARM, ALARM_swt);
+                    contentValues.put(TodolistContract.TodolistEntry.COLUMN_TITLE, TITLE);
+
+                    getContentResolver().update(intent_uri, contentValues, null, null);
+
+                }
+
+
+                NotificationManager nm = (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
+
+                nm.cancel(notification_id);
+
             }
-
-            Log.d(LOG_TAG, "notification accepted5");
-            NotificationManager nm = (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
-            Log.d(LOG_TAG, "notification accepted6");
-            nm.cancel(notification_id);
-            Log.d(LOG_TAG, "notification accepted7");
-        }
+        }*/
     }
 
     @Override

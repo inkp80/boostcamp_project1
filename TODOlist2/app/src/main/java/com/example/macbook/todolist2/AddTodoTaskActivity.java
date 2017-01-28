@@ -39,9 +39,10 @@ import java.sql.Time;
 public class AddTodoTaskActivity extends AppCompatActivity {
 
     String TAG = AddTodoTaskActivity.class.getName();
+    public static String locationStr;
     int check_day_of_week = 0;
     EditText mTitle;
-    TextView mLocation;
+    public static TextView mLocation;
     EditText mMemo;
 
     TextView mDate;
@@ -154,6 +155,7 @@ public class AddTodoTaskActivity extends AppCompatActivity {
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_ALARMID, alarmID);
 
 
+        contentValues.put(TodolistContract.TodolistEntry.COLUMN_LOCATION, locationStr);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TITLE, inputTitle);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_MEMO, inputMemo);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_YEAR, year);
@@ -348,4 +350,19 @@ public class AddTodoTaskActivity extends AppCompatActivity {
 
         }
     }
+
+
+    public static void settingLocation(String locStr){
+        locationStr = locStr;
+        mLocation.setText(locStr);
+        return;
+    }
+
+    @OnClick(R.id.add_location)
+    public void clickLocation(View view){
+        Intent intent = new Intent(this, AddressActivity.class);
+        intent.putExtra("caller", "Add");
+        startActivity(intent);
+    }
+
 }

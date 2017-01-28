@@ -9,7 +9,7 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:textSize="18sp"
         android:background="@drawable/back"
         android:text="Todo :"
@@ -21,28 +21,26 @@
         android:paddingBottom="10dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/back">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="23sp"
+            android:textSize="18sp"
             android:text="Time :     "/>
             <TextView
                 android:id="@+id/tv_date_viewer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="23sp"
+                android:textSize="18sp"
                 android:text="2017/01/01"
-                android:padding="5dp"
                 />
             <TextView
                 android:id="@+id/tv_time_viewer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="23sp"
+                android:textSize="18sp"
                 android:text="00:00"
-                android:padding="5dp"
                 android:layout_marginLeft="10dp"
                 />
     </LinearLayout>
@@ -178,8 +176,8 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:textSize="23sp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
         android:background="@drawable/back"
         android:text="Location : "
         />
@@ -204,7 +202,8 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="@android:drawable/edit_text"
-        android:hint="Enter you comments!"/>
+        android:hint="Enter you comments!"
+        android:visibility="invisible"/>
 
     <LinearLayout
         android:gravity="right"
