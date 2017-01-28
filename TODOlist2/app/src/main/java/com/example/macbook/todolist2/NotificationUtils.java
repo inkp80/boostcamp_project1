@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.example.macbook.todolist2.TodoListAdapter.INTENT_ALRAM;
 import static com.example.macbook.todolist2.TodoListAdapter.INTENT_ALRAM_ID;
 import static com.example.macbook.todolist2.TodoListAdapter.INTENT_DAY_OF_WEEK;
@@ -27,6 +29,7 @@ import static com.example.macbook.todolist2.TodoListAdapter.INTENT_URI;
 public class NotificationUtils {
 
     public static void NotificationSomethings(Context context, Intent intent) {
+
         Resources res = context.getResources();
         Intent notificationIntent = new Intent(context, MainActivity.class);
         notificationIntent.setAction("NOTI");
@@ -54,7 +57,7 @@ public class NotificationUtils {
                 .setContentIntent(contentIntent)
                 .setAutoCancel(true)
                 .setWhen(System.currentTimeMillis())
-                .setDefaults(Notification.DEFAULT_ALL);
+                .setDefaults(MainActivity.mode_val);
         //Notification.D
         //action 추가하여 추가 알람 및 확인 만들기
 

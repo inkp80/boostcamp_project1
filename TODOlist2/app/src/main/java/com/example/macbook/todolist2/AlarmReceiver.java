@@ -66,7 +66,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     }
 
-    private void cancelAlarm(PendingIntent pendingIntent, Context context) {
+
+    public static void cancelAlarm(PendingIntent pendingIntent, Context context) {
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
     }

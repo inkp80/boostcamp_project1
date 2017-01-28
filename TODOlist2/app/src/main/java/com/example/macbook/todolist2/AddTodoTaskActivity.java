@@ -145,7 +145,7 @@ public class AddTodoTaskActivity extends AppCompatActivity {
         }
 
 
-        String TIME = String.format("%d%02d%02d%02d%02d", year, month, date, HOUR_OF_DAY, minute);
+        String TIME = String.format("%d%02d%02d%02d%02d", year, month+1, date, HOUR_OF_DAY, minute);
 
         int alarmID = (year * month + date * HOUR_OF_DAY + minute) % 9973;
         ContentValues contentValues = new ContentValues();
@@ -167,10 +167,6 @@ public class AddTodoTaskActivity extends AppCompatActivity {
 
         Uri uri = getContentResolver().insert(TodolistContract.TodolistEntry.CONTENT_URI, contentValues);
 
-
-        if (uri != null) {
-            Toast.makeText(this, uri.toString(), Toast.LENGTH_SHORT).show();
-        }
 
         if (checkAlarm == 0) {
             Log.d(TAG, "no alarm, finish");
@@ -205,6 +201,10 @@ public class AddTodoTaskActivity extends AppCompatActivity {
 
         Log.d(TAG, " TRI " + triggerTime +" VS " + "CUR " + CurrentTime);
         if (CurrentTime > triggerTime) {
+            if(check_day_of_week == 0) {
+                Toast.makeText(getBaseContext(), "Time error, check time again", Toast.LENGTH_SHORT).show();
+                return;
+            }
             triggerTime = CurrentTime + (CurrentTime - triggerTime);
             //alarmManager.set(AlarmManager.RTC_WAKEUP, CurrentTime + triggerTime, pendingIntent);
         }

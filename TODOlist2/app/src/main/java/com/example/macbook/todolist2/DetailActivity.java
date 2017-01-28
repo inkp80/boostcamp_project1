@@ -62,6 +62,9 @@ import static com.example.macbook.todolist2.TodoListAdapter.INTENT_YEAR;
 //쿼리 업데이트문
 //resolver.update(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, values, "_id=" + id, null);
 public class DetailActivity extends AppCompatActivity {
+    public String TIME;
+
+
     static final int DATE_DIALOG_ID = 1;
     static final int TIME_DIALOG_ID = 2;
 
@@ -75,7 +78,7 @@ public class DetailActivity extends AppCompatActivity {
     public int ALARM_ID, ALARM;
 
     int Dialog_hour, Dialog_minute;
-    int year_int, month_int, date_int, hour_int, minute_int;
+    public int year_int, month_int, date_int, hour_int, minute_int;
 
     public static String locationStr;
 
@@ -138,6 +141,7 @@ public class DetailActivity extends AppCompatActivity {
         Dialog_hour = Integer.valueOf(HOUR);
         Dialog_minute = Integer.valueOf(MININUTE);
 
+        TIME = String.format("%d%02d%02d%02d%02d", year_int, (month_int + 1), date_int, hour_int, minute_int);
         LOCATION = intent.getStringExtra(INTENT_LOCATION);
 
         check_day_of_week = intent.getIntExtra(INTENT_DAY_OF_WEEK, 0);
@@ -146,6 +150,7 @@ public class DetailActivity extends AppCompatActivity {
 
         ALARM = intent.getIntExtra(INTENT_ALRAM, 0);
         ALARM_ID= intent.getIntExtra(INTENT_ALRAM_ID, 0);
+        Log.d(TAG, "ALARM ID is "+ALARM_ID);
 
 
         int conv_hour = Integer.valueOf(intent.getStringExtra(INTENT_HOUR));
@@ -269,13 +274,21 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
+        Intent intentForCancle = new Intent(getBaseContext(), AlarmReceiver.class);
+        PendingIntent pendingIntentForCancle
+                =PendingIntent.getBroadcast(getBaseContext(),ALARM_ID, intentForCancle, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager CancleAlarmManager = (AlarmManager)getBaseContext().getSystemService(Context.ALARM_SERVICE);
+        CancleAlarmManager.cancel(pendingIntentForCancle);
+
+
         ALARM_ID = (Integer.valueOf(YEAR)*Integer.valueOf(MONTH)*Integer.valueOf(HOUR)+Integer.valueOf(MININUTE)) % 9973;
+        TIME = String.format("%d%02d%02d%02d%02d", year_int, (month_int + 1), date_int, hour_int, minute_int);
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_DAY_OF_WEEK, check_day_of_week);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_ALARM, ALARM);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_ALARMID, ALARM_ID);
-
+        Log.d(TAG, "ALARM ID is "+ALARM_ID);
 
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TITLE, inputTitle);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_MEMO, inputMemo);
@@ -287,7 +300,7 @@ public class DetailActivity extends AppCompatActivity {
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME_MINUTE, MININUTE);
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_LOCATION, locationStr);
 
-        String TIME = String.format("%d%02d%02d%02d%02d", year_int, (month_int + 1), date_int, hour_int, minute_int);
+        Toast.makeText(this, TIME, Toast.LENGTH_LONG).show();
         contentValues.put(TodolistContract.TodolistEntry.COLUMN_TIME, TIME);
 
         Uri uri = TodolistContract.TodolistEntry.CONTENT_URI;
@@ -326,6 +339,10 @@ public class DetailActivity extends AppCompatActivity {
 
 
         if(CurrentTime > triggerTime){
+            if(check_day_of_week == 0) {
+                Toast.makeText(getBaseContext(), "Time error, check time again", Toast.LENGTH_SHORT).show();
+                return;
+            }
             triggerTime =  CurrentTime + (CurrentTime - triggerTime);
         }
         if(Build.VERSION.SDK_INT >= 23)
@@ -464,7 +481,7 @@ public class DetailActivity extends AppCompatActivity {
                     YEAR = String.valueOf(R_year);
                     MONTH = String.valueOf(R_month);
                     DATE = String.valueOf(R_date);
-
+                    //TIME = String.format("%d%02d%02d%02d%02d", year_int, (month_int + 1), date_int, hour_int, minute_int);
                     UpdateNow();
                 }
             };
@@ -473,6 +490,9 @@ public class DetailActivity extends AppCompatActivity {
             new TimePickerDialog.OnTimeSetListener(){
                 @Override
                 public void onTimeSet(TimePicker view, int R_hour, int R_minute) {
+                    hour_int = R_hour;
+                    minute_int = R_minute;
+
                     Dialog_hour = R_hour;
                     Dialog_minute = R_minute;
                     Log.d(TAG, "R_hour:"+R_hour);
@@ -489,7 +509,7 @@ public class DetailActivity extends AppCompatActivity {
                         Dialog_hour-=12;
                         isAMorPM = "PM";
                     }
-
+                    //TIME = String.format("%d%02d%02d%02d%02d", year_int, (month_int + 1), date_int, hour_int, minute_int);
                     UpdateNow();
                 }
             };
@@ -500,7 +520,7 @@ public class DetailActivity extends AppCompatActivity {
         tvDateViewer.setText(YEAR + "/" + (month_int+1) + "/" + DATE);
         tvTimeViewer.setText(String.format("%02d:%02d", Dialog_hour, Dialog_minute) + " " + isAMorPM);
         DBtime = YEAR+MONTH+DATE+String.format("%02d%02d", Dialog_hour, Dialog_minute);
-        Log.d(TAG, DBtime + "!!!!!!");
+        //TIME = String.format("%d%02d%02d%02d%02d", year_int, (month_int + 1), date_int, hour_int, minute_int);
     }
 
     @Override

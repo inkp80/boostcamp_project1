@@ -6,7 +6,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,6 +19,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +29,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.macbook.todolist2.data.TodolistContract;
 import com.example.macbook.todolist2.data.TodolistDbHelper;
@@ -40,7 +44,7 @@ import static com.example.macbook.todolist2.TodoListAdapter.INTENT_TITLE;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>{
-
+    public static int mode_val = Notification.DEFAULT_ALL;
     private static final int TASK_LOADER_ID = 0;
     private TodoListAdapter mAdapter;
     RecyclerView mTodoList_Viewer;
@@ -163,8 +167,7 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item){
         int itemThatWasClickedId = item.getItemId();
         if(itemThatWasClickedId == R.id.Setting_action){
-            //Intent -> setting Activity
-            //StartActivity(intent);
+            DialogSelectOption();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -216,6 +219,65 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
+    }
+
+
+    public int selmode;
+    public int curSel;
+    public void DialogSelectOption() {
+
+        setCurSel(mode_val);
+        final String items[] = { "ALL", "ONLY VIBRATE", "ONLY SOUND" };
+        AlertDialog.Builder ab = new AlertDialog.Builder(this);
+        ab.setTitle("Alarm mode");
+        ab.setSingleChoiceItems(items, curSel,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        switch (whichButton){
+                            case 0 :
+                                selmode = Notification.DEFAULT_ALL;
+                                break;
+                            case 1 :
+                                selmode = Notification.DEFAULT_VIBRATE;
+                                break;
+                            case 2 :
+                                selmode = Notification.DEFAULT_SOUND;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        mode_val = selmode;
+                        Toast.makeText(getBaseContext(), String.valueOf(mode_val), Toast.LENGTH_SHORT).show();
+                    }
+                }).setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        return;
+                    }
+                });
+        ab.show();
+    }
+
+    public void setCurSel(int m_val){
+        switch (m_val){
+            case Notification.DEFAULT_ALL :
+                curSel = 0;
+                break;
+            case Notification.DEFAULT_VIBRATE :
+                curSel = 1;
+                break;
+            case Notification.DEFAULT_SOUND :
+                curSel = 2;
+                break;
+            default:
+                curSel = 0;
+                break;
+        }
+        return;
     }
 
 }

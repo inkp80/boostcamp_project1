@@ -82,6 +82,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
 
         int idx_loc = mCursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_LOCATION);
 
+        int idx_alarmID = mCursor.getColumnIndex(TodolistContract.TodolistEntry.COLUMN_ALARMID);
 
 
 
@@ -102,6 +103,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         int day_Of_week = mCursor.getInt(idx_dayOfweek);
         int active_alarm = mCursor.getInt(idx_alarm);
 
+        int aID = mCursor.getInt(idx_alarmID);
         String LOC = mCursor.getString(idx_loc);
 
 
@@ -121,6 +123,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         holder.month_to_delivery = MONTH;
         holder.date_to_delivery = DATE;
 
+        holder.Alarm_id_to_delivery = aID;
         holder.location_to_delivery = LOC;
 
         //뷰 아이템에 데이터 결합
@@ -197,6 +200,8 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         String minute_to_delivery;
         String location_to_delivery;
 
+        int Alarm_id_to_delivery;
+
         int id_to_delivery;
 
         public TodoListViewHolder(View itemView){
@@ -228,6 +233,8 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
             intent.putExtra(INTENT_DATE, date_to_delivery);
 
             intent.putExtra(INTENT_LOCATION, location_to_delivery);
+
+            intent.putExtra(INTENT_ALRAM_ID, Alarm_id_to_delivery);
             mContext.startActivity(intent);
         }
         public void chageColor(){
