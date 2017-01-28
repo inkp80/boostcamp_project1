@@ -4,4 +4,8 @@
 - RecyclerView
 - CotentProvider
 - SQLite
-
+- Service
+- AlarmManager
+- Butterknife
+- Daum API
+- Notification
